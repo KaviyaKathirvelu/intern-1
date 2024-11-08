@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .status-active { color: green; }
+        .status-suspended { color: red; }
+        .status-inactive { color: orange; }
+        .action-icons { font-size: 20px; }
+        .action-icons .edit { color: blue; cursor: pointer; }
+        .action-icons .delete { color: red; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">User Management</h2>
+        <div class="d-flex justify-content-between mb-3">
+            <button class="btn btn-primary">Export to Excel</button>
+            <button class="btn btn-success">Add New User</button>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Date Created</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td><img src="{{ user.profile_picture_url }}" alt="User Image" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;"> {{ user.username }}</td>
+                        <td>{{ user.date_joined|date:"d/m/Y" }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>
+                            <span class="{% if user.status == 'Active' %}status-active{% elif user.status == 'Suspended' %}status-suspended{% else %}status-inactive{% endif %}">
+                                {{ user.status }}
+                            </span>
+                        </td>
+                        <td class="action-icons">
+                            <span class="edit">&#9881;</span>
+                            <span class="delete">&#10006;</span>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center">No users found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
